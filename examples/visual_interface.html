@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心智障碍者职场适配支持助手</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        h2 {
+            color: #388E3C;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        h3 {
+            color: #2E7D32;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .module-title {
+            background-color: #E8F5E8;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #4CAF50;
+            border-radius: 5px;
+            font-size: 1.1em;
+        }
+        
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #E3F2FD;
+            border-radius: 5px;
+            border-left: 4px solid #2196F3;
+        }
+        
+        .workflow-step {
+            background-color: #FFF3E0;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border-left: 4px solid #FF9800;
+        }
+        
+        .communication-scene {
+            background-color: #F3E5F5;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border-left: 4px solid #9C27B0;
+        }
+        
+        .emotion-card {
+            background-color: #E8F5E8;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .training-module {
+            background-color: #E1F5FE;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border-left: 4px solid #03A9F4;
+        }
+        
+        .icon {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+        
+        .step-number {
+            font-weight: bold;
+            color: #FF9800;
+        }
+        
+        .scene-title {
+            font-weight: bold;
+            color: #9C27B0;
+        }
+        
+        .emotion-title {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        
+        .module-title-training {
+            font-weight: bold;
+            color: #03A9F4;
+        }
+        
+        .warning {
+            background-color: #FFF8E1;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #FFC107;
+            margin-top: 10px;
+        }
+        
+        .error-handling {
+            background-color: #FFEBEE;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #F44336;
+            margin-top: 10px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>心智障碍者职场适配支持助手</h1>
+        
+        <!-- 模块1：岗位工作流程可视化拆解工具 -->
+        <div class="card">
+            <div class="module-title">📋 岗位工作流程可视化拆解工具</div>
+            <form id="workflow-form">
+                <div class="form-group">
+                    <label for="job-title">岗位名称：</label>
+                    <input type="text" id="job-title" placeholder="例如：超市理货员">
+                </div>
+                <div class="form-group">
+                    <label for="task">具体任务：</label>
+                    <input type="text" id="task" placeholder="例如：临期商品下架">
+                </div>
+                <button type="button" onclick="generateWorkflow()">生成工作流程</button>
+            </form>
+            <div id="workflow-result" class="result" style="display: none;"></div>
+        </div>
+        
+        <!-- 模块2：职场沟通辅助与话术生成工具 -->
+        <div class="card">
+            <div class="module-title">💬 职场沟通辅助与话术生成工具</div>
+            <form id="communication-form">
+                <div class="form-group">
+                    <label for="communication-job">岗位名称：</label>
+                    <input type="text" id="communication-job" placeholder="例如：烘焙店前台帮工">
+                </div>
+                <button type="button" onclick="generateCommunication()">生成沟通话术</button>
+            </form>
+            <div id="communication-result" class="result" style="display: none;"></div>
+        </div>
+        
+        <!-- 模块3：情绪与需求表达支持工具 -->
+        <div class="card">
+            <div class="module-title">😊 情绪与需求表达支持工具</div>
+            <button type="button" onclick="generateEmotion()">生成情绪与需求表达支持</button>
+            <div id="emotion-result" class="result" style="display: none;"></div>
+        </div>
+        
+        <!-- 模块4：岗位适配训练与岗前培训工具 -->
+        <div class="card">
+            <div class="module-title">🎓 岗位适配训练与岗前培训工具</div>
+            <form id="training-form">
+                <div class="form-group">
+                    <label for="training-job">岗位名称：</label>
+                    <input type="text" id="training-job" placeholder="例如：酒店保洁">
+                </div>
+                <button type="button" onclick="generateTraining()">生成培训材料</button>
+            </form>
+            <div id="training-result" class="result" style="display: none;"></div>
+        </div>
+    </div>
+    
+    <script>
+        // 生成工作流程
+        function generateWorkflow() {
+            const jobTitle = document.getElementById('job-title').value;
+            const task = document.getElementById('task').value;
+            
+            if (!jobTitle || !task) {
+                alert('请填写岗位名称和具体任务');
+                return;
+            }
+            
+            const result = document.getElementById('workflow-result');
+            result.innerHTML = `
+                <h3>工作流程：${jobTitle} - ${task}</h3>
+                <div class="workflow-step">
+                    <span class="step-number">1. 🔍</span> 找到${task.split(' ')[1]}<br>
+                    <small>看${task.split(' ')[1]}上的日期</small>
+                </div>
+                <div class="workflow-step">
+                    <span class="step-number">2. 📦</span> 轻轻取下${task.split(' ')[1]}<br>
+                    <small>放在手上</small>
+                </div>
+                <div class="workflow-step">
+                    <span class="step-number">3. 👨‍🏫</span> 拿到带教老师面前
+                </div>
+                <div class="workflow-step">
+                    <span class="step-number">4. 💬</span> 告诉带教老师<br>
+                    <small>这是${task}</small>
+                </div>
+                <div class="warning">
+                    <strong>⚠️ 易错点：</strong><br>
+                    1. 别拿错保质期好的${task.split(' ')[1]}<br>
+                    2. 取${task.split(' ')[1]}时别弄掉其他${task.split(' ')[1]}<br>
+                    3. 记得找带教老师，别自己处理
+                </div>
+                <div class="error-handling">
+                    <strong>❌ 做错了怎么办：</strong><br>
+                    1. 立刻停下手中的事<br>
+                    2. 找到带教老师<br>
+                    3. 告诉带教老师哪里做错了
+                </div>
+            `;
+            result.style.display = 'block';
+        }
+        
+        // 生成沟通话术
+        function generateCommunication() {
+            const jobTitle = document.getElementById('communication-job').value;
+            
+            if (!jobTitle) {
+                alert('请填写岗位名称');
+                return;
+            }
+            
+            const result = document.getElementById('communication-result');
+            result.innerHTML = `
+                <h3>沟通话术：${jobTitle}</h3>
+                <div class="communication-scene">
+                    <span class="scene-title">🔵 顾客常规提问：</span><br>
+                    🗣️ 您好，需要什么帮助？<br>
+                    🗣️ 这个商品是今天的，新鲜。<br>
+                    🗣️ 收款机在这里，麻烦扫码。<br>
+                    🗣️ 谢谢光临，欢迎再来！<br>
+                    🗣️ 请问需要打包吗？
+                </div>
+                <div class="communication-scene">
+                    <span class="scene-title">🟢 同事工作对接：</span><br>
+                    🗣️ 这个订单我做完了，给你。<br>
+                    🗣️ 请问这个放在哪里？<br>
+                    🗣️ 我去洗手间，帮我看一下。<br>
+                    🗣️ 这个商品卖完了，告诉顾客。<br>
+                    🗣️ 下班时间到了，交接一下。
+                </div>
+                <div class="communication-scene">
+                    <span class="scene-title">🟡 向带教老师求助：</span><br>
+                    🗣️ 老师，我不会做这个，能教我吗？<br>
+                    🗣️ 老师，这个机器怎么用？<br>
+                    🗣️ 老师，顾客问的问题我不会答。<br>
+                    🗣️ 老师，我身体有点不舒服。<br>
+                    🗣️ 老师，我需要休息一下。
+                </div>
+                <div class="communication-scene">
+                    <span class="scene-title">🟠 表达自身需求：</span><br>
+                    🗣️ 我想喝水，去拿杯子。<br>
+                    🗣️ 我肚子饿了，要去吃饭。<br>
+                    🗣️ 我眼睛累了，想休息5分钟。<br>
+                    🗣️ 我手疼，需要戴手套。<br>
+                    🗣️ 我要上洗手间，马上回来。
+                </div>
+                <div class="communication-scene">
+                    <span class="scene-title">🔴 突发场景应急：</span><br>
+                    🗣️ 对不起，我去找带教老师。<br>
+                    🗣️ 老师，这里有顾客投诉我。<br>
+                    🗣️ 老师，我做错了，能帮我吗？
+                </div>
+            `;
+            result.style.display = 'block';
+        }
+        
+        // 生成情绪与需求表达支持
+        function generateEmotion() {
+            const result = document.getElementById('emotion-result');
+            result.innerHTML = `
+                <h3>情绪与需求表达支持</h3>
+                <div class="emotion-card">
+                    <span class="emotion-title">😊 平静：</span>心情好，工作顺利<br>
+                    <small>继续保持，认真工作</small>
+                </div>
+                <div class="emotion-card">
+                    <span class="emotion-title">😰 紧张：</span>心跳加快，手心出汗<br>
+                    <small>停下来，深呼吸3次</small><br>
+                    <small>喝口水，休息1分钟</small>
+                </div>
+                <div class="emotion-card">
+                    <span class="emotion-title">😟 焦虑：</span>担心做不好，害怕被批评<br>
+                    <small>找到带教老师</small><br>
+                    <small>告诉老师：我有点担心</small>
+                </div>
+                <div class="emotion-card">
+                    <span class="emotion-title">😠 生气：</span>心里难受，想发脾气<br>
+                    <small>离开现场，到休息区</small><br>
+                    <small>坐5分钟，慢慢平静</small>
+                </div>
+                <div class="emotion-card">
+                    <span class="emotion-title">📝 需求表达：</span><br>
+                    👋 我需要帮助：老师，我不会做这个<br>
+                    🤒 我身体不舒服：老师，我肚子有点疼<br>
+                    😴 我想休息5分钟：老师，我有点累<br>
+                    🥤 我渴了：老师，我想喝水<br>
+                    🍽️ 我饿了：老师，我想吃饭
+                </div>
+                <div class="emotion-card">
+                    <span class="emotion-title">👨‍🏫 情绪应激事件处理指引（给带教老师）：</span><br>
+                    1. 保持冷静，不要大声说话<br>
+                    2. 走到心智障碍者身边，轻声询问<br>
+                    3. 用简单的话安抚：「没关系，我来帮你」<br>
+                    4. 带他到安静的地方，慢慢沟通<br>
+                    5. 了解原因，给予具体帮助
+                </div>
+            `;
+            result.style.display = 'block';
+        }
+        
+        // 生成培训材料
+        function generateTraining() {
+            const jobTitle = document.getElementById('training-job').value;
+            
+            if (!jobTitle) {
+                alert('请填写岗位名称');
+                return;
+            }
+            
+            const result = document.getElementById('training-result');
+            result.innerHTML = `
+                <h3>培训材料：${jobTitle}</h3>
+                <div class="training-module">
+                    <span class="module-title-training">🏢 岗位认知：</span><br>
+                    - ${jobTitle}的工作是保持工作区域干净整洁<br>
+                    - 要对顾客友好，保持微笑
+                </div>
+                <div class="training-module">
+                    <span class="module-title-training">📋 工作流程：</span><br>
+                    1. 准备工作用品<br>
+                    2. 按照规定步骤完成工作<br>
+                    3. 检查工作质量<br>
+                    4. 整理工作用品
+                </div>
+                <div class="training-module">
+                    <span class="module-title-training">💬 沟通规范：</span><br>
+                    - 遇到顾客说：您好！<br>
+                    - 顾客问话要认真回答<br>
+                    - 有问题找带教老师
+                </div>
+                <div class="training-module">
+                    <span class="module-title-training">⚠️ 安全规则：</span><br>
+                    - 小心使用工具，注意安全<br>
+                    - 发现危险要告诉带教老师<br>
+                    - 遵守工作场所的安全规定
+                </div>
+                <div class="training-module">
+                    <span class="module-title-training">😊 情绪管理：</span><br>
+                    - 工作累了可以休息一下<br>
+                    - 心情不好找带教老师聊聊
+                </div>
+                <div class="training-module">
+                    <span class="module-title-training">🏆 岗位模拟训练题库：</span><br>
+                    1. 如何正确完成工作任务？<br>
+                    <small>答案：按照带教老师教的步骤，一步一步做</small><br>
+                    2. 遇到顾客询问，应该怎么做？<br>
+                    <small>答案：微笑回答，不知道的找带教老师</small><br>
+                    3. 工作中遇到困难，应该怎么做？<br>
+                    <small>答案：找到带教老师，寻求帮助</small>
+                </div>
+                <div class="training-module">
+                    <span class="module-title-training">👨‍🏫 企业用工适配指引：</span><br>
+                    <strong>带教老师工作规范：</strong><br>
+                    - 耐心教导，多鼓励<br>
+                    - 分解任务，一步一步教<br>
+                    <strong>环境适配建议：</strong><br>
+                    - 工作区域保持整洁有序<br>
+                    - 物品摆放固定位置<br>
+                    <strong>激励方法：</strong><br>
+                    - 完成任务给予表扬<br>
+                    - 定期评选优秀员工<br>
+                    <strong>风险防控：</strong><br>
+                    - 定期安全培训<br>
+                    - 建立应急处理机制
+                </div>
+            `;
+            result.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
