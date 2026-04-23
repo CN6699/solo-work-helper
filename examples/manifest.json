@@ -1,0 +1,47 @@
+{
+  "name": "心智障碍者职场适配支持助手",
+  "short_name": "职场支持助手",
+  "description": "为心智障碍者提供职场适配支持的工具",
+  "start_url": "./visual_interface.html",
+  "display": "standalone",
+  "background_color": "#f5f5f5",
+  "theme_color": "#4CAF50",
+  "icons": [
+    {
+      "src": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20logo%20for%20mental%20disability%20employment%20support%20assistant%2C%20green%20color%2C%20heart%20symbol%2C%20simple%20and%20friendly&image_size=square",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20logo%20for%20mental%20disability%20employment%20support%20assistant%2C%20green%20color%2C%20heart%20symbol%2C%20simple%20and%20friendly&image_size=square_hd",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "orientation": "portrait",
+  "categories": ["productivity", "education", "health"],
+  "screenshots": [
+    {
+      "src": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=mobile%20screenshot%20of%20employment%20support%20app%20for%20people%20with%20disabilities%2C%20green%20interface%2C%20simple%20design&image_size=portrait_16_9",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "工作流程",
+      "short_name": "工作流程",
+      "description": "生成工作流程",
+      "url": "./visual_interface.html#workflow",
+      "icons": [{ "src": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=tasks%20icon%20simple%20green&image_size=square", "sizes": "192x192" }]
+    },
+    {
+      "name": "沟通话术",
+      "short_name": "沟通",
+      "description": "生成沟通话术",
+      "url": "./visual_interface.html#communication",
+      "icons": [{ "src": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=comments%20icon%20simple%20green&image_size=square", "sizes": "192x192" }]
+    }
+  ]
+}

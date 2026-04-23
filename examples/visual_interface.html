@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>心智障碍者职场适配支持助手</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PWA 相关元标签 -->
+    <meta name="description" content="为心智障碍者提供职场适配支持的工具">
+    <meta name="theme-color" content="#4CAF50">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="icon" href="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20logo%20for%20mental%20disability%20employment%20support%20assistant%2C%20green%20color%2C%20heart%20symbol%2C%20simple%20and%20friendly&image_size=square" type="image/png">
+    <link rel="apple-touch-icon" href="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20logo%20for%20mental%20disability%20employment%20support%20assistant%2C%20green%20color%2C%20heart%20symbol%2C%20simple%20and%20friendly&image_size=square">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="职场支持助手">
     <style>
         * {
             margin: 0;
@@ -29,6 +39,7 @@
             color: #4CAF50;
             margin-bottom: 30px;
             font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
         
         h2 {
@@ -45,21 +56,28 @@
         
         .card {
             background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
         
         .module-title {
             background-color: #E8F5E8;
-            padding: 15px;
-            border-radius: 8px;
+            padding: 18px;
+            border-radius: 10px;
             margin-bottom: 20px;
             font-size: 1.3em;
             font-weight: bold;
             text-align: center;
             color: #2E7D32;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .form-group {
@@ -80,6 +98,165 @@
             border: 2px solid #4CAF50;
             border-radius: 8px;
             font-size: 1.1em;
+            transition: border-color 0.3s ease;
+        }
+        
+        .voice-btn {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin-top: 5px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .voice-btn:hover {
+            background-color: #1976D2;
+        }
+        
+        .play-btn {
+            background-color: #FF9800;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-left: 10px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .play-btn:hover {
+            background-color: #F57C00;
+        }
+        
+        /* 历史记录模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4CAF50;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            color: #4CAF50;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .history-item {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #2196F3;
+            transition: transform 0.2s ease;
+        }
+        
+        .history-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .history-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .history-item-type {
+            font-weight: bold;
+            color: #2196F3;
+        }
+        
+        .history-item-time {
+            font-size: 0.8em;
+            color: #666;
+        }
+        
+        .history-item-content {
+            margin-top: 8px;
+            font-size: 0.9em;
+        }
+        
+        .history-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .history-actions button {
+            padding: 5px 10px;
+            font-size: 0.8em;
+            border-radius: 4px;
+        }
+        
+        .empty-history {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .clear-history {
+            margin-top: 20px;
+            text-align: right;
+        }
+        
+        .clear-history button {
+            background-color: #f44336;
+        }
+        
+        .clear-history button:hover {
+            background-color: #d32f2f;
+        }
+        
+        input[type="text"]:focus, select:focus {
+            outline: none;
+            border-color: #388E3C;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
         }
         
         button {
@@ -90,13 +267,282 @@
             border-radius: 8px;
             font-size: 1.2em;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s ease, transform 0.2s ease;
             width: 100%;
             margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(76, 175, 80, 0.3);
         }
         
         button:hover {
             background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(76, 175, 80, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(76, 175, 80, 0.3);
+        }
+        
+        button {
+            transition: all 0.3s ease;
+        }
+        
+        /* 输入框动画 */
+        input[type="text"]:focus, select:focus {
+            outline: none;
+            border-color: #388E3C;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+            transform: scale(1.02);
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"], select {
+            transition: all 0.3s ease;
+        }
+        
+        /* 卡片动画 */
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 模块标题动画 */
+        .module-title {
+            background-color: #E8F5E8;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            font-weight: bold;
+            text-align: center;
+            color: #2E7D32;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .module-title:hover {
+            transform: scale(1.01);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        /* 模态框动画 */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        /* 滚动动画 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 加载动画优化 */
+        .loading-spinner {
+            border: 4px solid rgba(76, 175, 80, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #4CAF50;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 历史记录项动画 */
+        .history-item {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #2196F3;
+            transition: all 0.3s ease;
+            animation: slideInLeft 0.4s ease-out;
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .history-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* 深色模式 */
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .card {
+            background-color: #2d2d2d;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        body.dark-mode .module-title {
+            background-color: #2e7d32;
+            color: #e8f5e8;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        body.dark-mode .navbar {
+            background-color: #2e7d32;
+        }
+        
+        body.dark-mode input[type="text"], body.dark-mode select {
+            background-color: #3d3d3d;
+            color: #e0e0e0;
+            border-color: #4caf50;
+        }
+        
+        body.dark-mode input[type="text"]:focus, body.dark-mode select:focus {
+            border-color: #388e3c;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
+        }
+        
+        body.dark-mode button {
+            background-color: #4caf50;
+        }
+        
+        body.dark-mode button:hover {
+            background-color: #45a049;
+            box-shadow: 0 6px 12px rgba(76, 175, 80, 0.5);
+        }
+        
+        body.dark-mode .result {
+            background-color: #1e3a5f;
+            border-left: 4px solid #2196f3;
+        }
+        
+        body.dark-mode .workflow-card {
+            background-color: #2d2d2d;
+            border: 2px solid #ff9800;
+        }
+        
+        body.dark-mode .workflow-step {
+            background-color: #3d2b1f;
+            border-left: 4px solid #ff9800;
+        }
+        
+        body.dark-mode .communication-card {
+            background-color: #2d2d2d;
+            border: 2px solid #9c27b0;
+        }
+        
+        body.dark-mode .communication-scene {
+            background-color: #3d1f3d;
+            border-left: 4px solid #9c27b0;
+        }
+        
+        body.dark-mode .emotion-card-container {
+            background-color: #2d2d2d;
+            border: 2px solid #4caf50;
+        }
+        
+        body.dark-mode .emotion-card {
+            background-color: #1f3d1f;
+            border-left: 4px solid #4caf50;
+        }
+        
+        body.dark-mode .training-card {
+            background-color: #2d2d2d;
+            border: 2px solid #03a9f4;
+        }
+        
+        body.dark-mode .training-module {
+            background-color: #1f2d3d;
+            border-left: 4px solid #03a9f4;
+        }
+        
+        body.dark-mode .warning {
+            background-color: #3d3d1f;
+            border-left: 4px solid #ffc107;
+        }
+        
+        body.dark-mode .error-handling {
+            background-color: #3d1f1f;
+            border-left: 4px solid #f44336;
+        }
+        
+        body.dark-mode .modal-content {
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        
+        body.dark-mode .history-item {
+            background-color: #2d2d2d;
+            border-left: 4px solid #2196f3;
+        }
+        
+        body.dark-mode .empty-history {
+            color: #9e9e9e;
+        }
+        
+        body.dark-mode #recognition-status {
+            background-color: rgba(76, 175, 80, 0.9);
+        }
+        
+        body.dark-mode #speech-status {
+            background-color: rgba(33, 150, 243, 0.9);
         }
         
         .result {
@@ -105,16 +551,28 @@
             background-color: #E3F2FD;
             border-radius: 8px;
             border-left: 4px solid #2196F3;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         /* 工作流程卡样式 */
         .workflow-card {
             background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 25px;
             border: 2px solid #FF9800;
+            animation: slideIn 0.5s ease-in-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
         
         .workflow-card h4 {
@@ -126,10 +584,15 @@
         
         .workflow-step {
             background-color: #FFF3E0;
-            padding: 15px;
+            padding: 18px;
             border-radius: 8px;
             margin-bottom: 15px;
             border-left: 4px solid #FF9800;
+            transition: transform 0.2s ease;
+        }
+        
+        .workflow-step:hover {
+            transform: translateX(5px);
         }
         
         .step-number {
@@ -141,11 +604,12 @@
         /* 沟通话术卡样式 */
         .communication-card {
             background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 25px;
             border: 2px solid #9C27B0;
+            animation: slideIn 0.5s ease-in-out;
         }
         
         .communication-card h4 {
@@ -157,10 +621,15 @@
         
         .communication-scene {
             background-color: #F3E5F5;
-            padding: 15px;
+            padding: 18px;
             border-radius: 8px;
             margin-bottom: 15px;
             border-left: 4px solid #9C27B0;
+            transition: transform 0.2s ease;
+        }
+        
+        .communication-scene:hover {
+            transform: translateX(5px);
         }
         
         .scene-title {
@@ -173,11 +642,12 @@
         /* 情绪与需求表达卡样式 */
         .emotion-card-container {
             background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 25px;
             border: 2px solid #4CAF50;
+            animation: slideIn 0.5s ease-in-out;
         }
         
         .emotion-card-container h4 {
@@ -189,10 +659,15 @@
         
         .emotion-card {
             background-color: #E8F5E8;
-            padding: 15px;
+            padding: 18px;
             border-radius: 8px;
             margin-bottom: 15px;
             border-left: 4px solid #4CAF50;
+            transition: transform 0.2s ease;
+        }
+        
+        .emotion-card:hover {
+            transform: translateX(5px);
         }
         
         .emotion-title {
@@ -204,11 +679,12 @@
         /* 培训材料样式 */
         .training-card {
             background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 25px;
             border: 2px solid #03A9F4;
+            animation: slideIn 0.5s ease-in-out;
         }
         
         .training-card h4 {
@@ -220,10 +696,15 @@
         
         .training-module {
             background-color: #E1F5FE;
-            padding: 15px;
+            padding: 18px;
             border-radius: 8px;
             margin-bottom: 15px;
             border-left: 4px solid #03A9F4;
+            transition: transform 0.2s ease;
+        }
+        
+        .training-module:hover {
+            transform: translateX(5px);
         }
         
         .module-title-training {
@@ -279,6 +760,85 @@
                 padding: 10px;
                 font-size: 1.2em;
             }
+            
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+            
+            .navbar h2 {
+                text-align: center;
+            }
+            
+            .navbar > div {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+            
+            .language-selector {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .language-selector select {
+                width: 100%;
+            }
+            
+            .voice-btn {
+                width: 100%;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+            
+            .history-actions {
+                flex-direction: column;
+            }
+            
+            .history-actions button {
+                width: 100%;
+            }
+        }
+        
+        /* 平板设备 */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .navbar {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .navbar > div {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+        
+        /* 大屏设备 */
+        @media (min-width: 1025px) {
+            .container {
+                max-width: 1200px;
+            }
+        }
+        
+        /* 横屏手机 */
+        @media (orientation: landscape) and (max-width: 768px) {
+            .navbar {
+                flex-direction: row;
+                align-items: center;
+            }
+            
+            .navbar > div {
+                flex-direction: row;
+                align-items: center;
+            }
         }
         
         /* 打印样式 */
@@ -301,64 +861,702 @@
                 display: none;
             }
         }
+        
+        /* 导航栏 */
+        .navbar {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .navbar h2 {
+            color: white;
+            margin: 0;
+        }
+        
+        .language-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .language-selector label {
+            color: white;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .language-selector select {
+            padding: 8px;
+            border-radius: 6px;
+            border: none;
+            font-size: 1em;
+            width: auto;
+        }
+        
+        /* 加载动画 */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+        
+        .loading-spinner {
+            border: 4px solid rgba(76, 175, 80, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #4CAF50;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 历史记录按钮 */
+        .history-btn {
+            background-color: #2196F3;
+            margin-top: 10px;
+        }
+        
+        .history-btn:hover {
+            background-color: #1976D2;
+        }
+        
+        /* 收藏按钮 */
+        .favorite-btn {
+            background-color: #FF9800;
+            margin-top: 10px;
+        }
+        
+        .favorite-btn:hover {
+            background-color: #F57C00;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>心智障碍者职场适配支持助手</h1>
+        <div class="navbar">
+            <h2><i class="fas fa-heart"></i> 心智障碍者职场适配支持助手</h2>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button type="button" class="history-btn" onclick="showHistory()" style="width: auto; margin: 0;"><i class="fas fa-history"></i> 历史记录</button>
+                <button type="button" class="history-btn" onclick="showExportOptions()" style="width: auto; margin: 0;"><i class="fas fa-download"></i> 导出数据</button>
+                <button type="button" class="history-btn" onclick="showFeedback()" style="width: auto; margin: 0;"><i class="fas fa-comment-dots"></i> 反馈建议</button>
+                <button type="button" class="history-btn" onclick="toggleDarkMode()" style="width: auto; margin: 0;"><i class="fas fa-moon"></i> 深色模式</button>
+                <div class="language-selector">
+                    <label for="language">语言：</label>
+                    <select id="language" onchange="changeLanguage()">
+                        <option value="zh-CN">简体中文</option>
+                        <option value="zh-TW">繁体中文</option>
+                        <option value="en">English</option>
+                        <option value="yue">粤语</option>
+                        <option value="min">闽南语</option>
+                    </select>
+                </div>
+            </div>
+        </div>
         
         <!-- 模块1：岗位工作流程可视化拆解工具 -->
         <div class="card">
-            <div class="module-title">📋 岗位工作流程可视化拆解工具</div>
+            <div class="module-title"><i class="fas fa-tasks"></i> 岗位工作流程可视化拆解工具</div>
             <form id="workflow-form">
                 <div class="form-group">
                     <label for="job-title">岗位名称：</label>
-                    <input type="text" id="job-title" placeholder="例如：超市理货员">
+                    <input type="text" id="job-title" placeholder="例如：超市理货员" list="job-titles">
+                    <button type="button" class="voice-btn" onclick="startVoiceRecognition('job-title')"><i class="fas fa-microphone"></i> 语音输入</button>
+                    <datalist id="job-titles">
+                        <option value="超市理货员">
+                        <option value="酒店保洁">
+                        <option value="烘焙店帮工">
+                        <option value="仓库分拣员">
+                        <option value="包装工">
+                        <option value="餐厅洗碗工">
+                        <option value="前台帮工">
+                        <option value="绿植养护">
+                        <option value="快递分拣">
+                        <option value="图书馆整理">
+                        <option value="文员助理">
+                        <option value="洗车工">
+                        <option value="咖啡店服务员">
+                        <option value="快餐店员工">
+                        <option value="电影院检票员">
+                        <option value="加油站服务员">
+                        <option value="停车场收费员">
+                        <option value="商场导购员">
+                        <option value="医院导诊员">
+                        <option value="养老院护理员">
+                        <option value="宠物店助理">
+                        <option value="花店助理">
+                        <option value="洗衣店员工">
+                        <option value="印刷厂工人">
+                        <option value="电子厂装配工">
+                        <option value="服装厂工人">
+                        <option value="玩具厂工人">
+                        <option value="食品厂工人">
+                        <option value="物流公司分拣员">
+                        <option value="便利店员工">
+                        <option value="奶茶店员工">
+                        <option value="面包店员工">
+                        <option value="水果店员工">
+                        <option value="蔬菜店员工">
+                        <option value="药店营业员">
+                        <option value="书店营业员">
+                        <option value="文具店营业员">
+                        <option value="服装店营业员">
+                        <option value="鞋店营业员">
+                        <option value="电器店营业员">
+                        <option value="家具店营业员">
+                        <option value="超市收银员">
+                        <option value="酒店前台">
+                        <option value="餐厅服务员">
+                        <option value="咖啡厅服务员">
+                        <option value="酒吧服务员">
+                        <option value="KTV服务员">
+                        <option value="电影院服务员">
+                        <option value="游乐园服务员">
+                        <option value="健身房服务员">
+                        <option value="游泳馆服务员">
+                        <option value="图书馆管理员">
+                        <option value="博物馆讲解员">
+                        <option value="公园管理员">
+                        <option value="动物园管理员">
+                        <option value="植物园管理员">
+                        <option value="环卫工">
+                        <option value="园林工人">
+                        <option value="道路清洁工">
+                        <option value="垃圾分拣工">
+                        <option value="废品回收工">
+                        <option value="仓库管理员">
+                        <option value="物流配送员">
+                        <option value="外卖配送员">
+                        <option value="快递员">
+                        <option value="搬家工">
+                        <option value="搬运工">
+                        <option value="装卸工">
+                        <option value="建筑工人">
+                        <option value="装修工人">
+                        <option value="水电工">
+                        <option value="木工">
+                        <option value="瓦工">
+                        <option value="油漆工">
+                        <option value="电焊工">
+                        <option value="机修工">
+                        <option value="汽车修理工">
+                        <option value="自行车修理工">
+                        <option value="家电修理工">
+                        <option value="手机修理工">
+                        <option value="电脑修理工">
+                        <option value="钟表修理工">
+                        <option value="眼镜修理工">
+                        <option value="乐器修理工">
+                        <option value="首饰修理工">
+                        <option value="皮革修理工">
+                        <option value="鞋修理工">
+                        <option value="开锁匠">
+                        <option value="配钥匙匠">
+                        <option value="裁缝">
+                        <option value="理发师">
+                        <option value="美容师">
+                        <option value="按摩师">
+                        <option value="足疗师">
+                        <option value="厨师">
+                        <option value="面点师">
+                        <option value="烘焙师">
+                        <option value="调酒师">
+                        <option value="咖啡师">
+                        <option value="茶艺师">
+                        <option value="营养师">
+                        <option value="健康管理师">
+                        <option value="心理咨询师">
+                        <option value="社会工作者">
+                        <option value="志愿者">
+                        <option value="教师助理">
+                        <option value="保育员">
+                        <option value="护士助理">
+                        <option value="医生助理">
+                        <option value="药剂师助理">
+                        <option value="实验室助理">
+                        <option value="科研助理">
+                        <option value="行政助理">
+                        <option value="人事助理">
+                        <option value="财务助理">
+                        <option value="销售助理">
+                        <option value="市场助理">
+                        <option value="公关助理">
+                        <option value="策划助理">
+                        <option value="设计助理">
+                        <option value="文案助理">
+                        <option value="编辑助理">
+                        <option value="记者助理">
+                        <option value="主持人助理">
+                        <option value="演员助理">
+                        <option value="歌手助理">
+                        <option value="运动员助理">
+                        <option value="教练助理">
+                        <option value="裁判助理">
+                        <option value="摄影师助理">
+                        <option value="摄像师助理">
+                        <option value="化妆师助理">
+                        <option value="造型师助理">
+                        <option value="灯光师助理">
+                        <option value="音响师助理">
+                        <option value="舞美师助理">
+                        <option value="道具师助理">
+                        <option value="服装师助理">
+                        <option value="场记助理">
+                        <option value="剧务助理">
+                        <option value="制片助理">
+                        <option value="导演助理">
+                        <option value="编剧助理">
+                        <option value="剪辑助理">
+                        <option value="特效助理">
+                        <option value="动画师助理">
+                        <option value="游戏开发助理">
+                        <option value="软件开发助理">
+                        <option value="测试助理">
+                        <option value="运维助理">
+                        <option value="网络工程师助理">
+                        <option value="系统工程师助理">
+                        <option value="数据库工程师助理">
+                        <option value="安全工程师助理">
+                        <option value="硬件工程师助理">
+                        <option value="嵌入式工程师助理">
+                        <option value="物联网工程师助理">
+                        <option value="人工智能工程师助理">
+                        <option value="大数据工程师助理">
+                        <option value="云计算工程师助理">
+                        <option value="区块链工程师助理">
+                        <option value="虚拟现实工程师助理">
+                        <option value="增强现实工程师助理">
+                        <option value="元宇宙工程师助理">
+                    </datalist>
                 </div>
                 <div class="form-group">
                     <label for="task">具体任务：</label>
-                    <input type="text" id="task" placeholder="例如：临期商品下架">
+                    <input type="text" id="task" placeholder="例如：临期商品下架" list="task-templates">
+                    <button type="button" class="voice-btn" onclick="startVoiceRecognition('task')"><i class="fas fa-microphone"></i> 语音输入</button>
+                    <datalist id="task-templates">
+                        <option value="临期商品下架">
+                        <option value="货架补货">
+                        <option value="商品整理">
+                        <option value="收银结账">
+                        <option value="清洁卫生">
+                        <option value="顾客引导">
+                        <option value="商品包装">
+                        <option value="库存盘点">
+                        <option value="货物搬运">
+                        <option value="设备清洁">
+                        <option value="文件整理">
+                        <option value="数据录入">
+                        <option value="电话接听">
+                        <option value="邮件处理">
+                        <option value="会议准备">
+                        <option value="资料归档">
+                        <option value="表格制作">
+                        <option value="报告撰写">
+                        <option value="客户接待">
+                        <option value="产品展示">
+                        <option value="订单处理">
+                        <option value="退货处理">
+                        <option value="投诉处理">
+                        <option value="售后服务">
+                        <option value="市场调研">
+                        <option value="活动策划">
+                        <option value="宣传推广">
+                        <option value="社交媒体运营">
+                        <option value="内容创作">
+                        <option value="视频拍摄">
+                        <option value="图片处理">
+                        <option value="网页设计">
+                        <option value="程序开发">
+                        <option value="软件测试">
+                        <option value="系统维护">
+                        <option value="网络管理">
+                        <option value="安全监控">
+                        <option value="设备维修">
+                        <option value="车辆保养">
+                        <option value="厨房操作">
+                        <option value="餐饮服务">
+                        <option value="客房服务">
+                        <option value="医疗辅助">
+                        <option value="教育辅助">
+                        <option value="康复训练">
+                        <option value="心理咨询">
+                        <option value="社会工作">
+                        <option value="志愿服务">
+                        <option value="体育教练">
+                        <option value="艺术指导">
+                        <option value="文化传承">
+                        <option value="环境保护">
+                        <option value="社区服务">
+                        <option value="应急救援">
+                        <option value="公共安全">
+                        <option value="交通管理">
+                        <option value="城市规划">
+                        <option value="建筑设计">
+                        <option value="工程施工">
+                        <option value="质量检测">
+                        <option value="安全评估">
+                        <option value="物流配送">
+                        <option value="仓储管理">
+                        <option value="供应链管理">
+                        <option value="采购管理">
+                        <option value="销售管理">
+                        <option value="财务管理">
+                        <option value="人力资源管理">
+                        <option value="行政管理">
+                        <option value="法务管理">
+                        <option value="知识产权管理">
+                        <option value="品牌管理">
+                        <option value="危机管理">
+                        <option value="战略规划">
+                        <option value="商业模式创新">
+                        <option value="技术创新">
+                        <option value="产品创新">
+                        <option value="服务创新">
+                        <option value="管理创新">
+                        <option value="文化创新">
+                        <option value="教育创新">
+                        <option value="医疗创新">
+                        <option value="环保创新">
+                        <option value="社会创新">
+                    </datalist>
                 </div>
                 <button type="button" onclick="generateWorkflow()">生成工作流程</button>
             </form>
+            <div class="loading" id="workflow-loading">
+                <div class="loading-spinner"></div>
+                <p>正在生成工作流程...</p>
+            </div>
             <div id="workflow-result" class="result" style="display: none;"></div>
         </div>
         
         <!-- 模块2：职场沟通辅助与话术生成工具 -->
         <div class="card">
-            <div class="module-title">💬 职场沟通辅助与话术生成工具</div>
+            <div class="module-title"><i class="fas fa-comments"></i> 职场沟通辅助与话术生成工具</div>
             <form id="communication-form">
                 <div class="form-group">
                     <label for="communication-job">岗位名称：</label>
-                    <input type="text" id="communication-job" placeholder="例如：烘焙店前台帮工">
+                    <input type="text" id="communication-job" placeholder="例如：烘焙店前台帮工" list="job-titles">
+                    <button type="button" class="voice-btn" onclick="startVoiceRecognition('communication-job')"><i class="fas fa-microphone"></i> 语音输入</button>
                 </div>
                 <button type="button" onclick="generateCommunication()">生成沟通话术</button>
             </form>
+            <div class="loading" id="communication-loading">
+                <div class="loading-spinner"></div>
+                <p>正在生成沟通话术...</p>
+            </div>
             <div id="communication-result" class="result" style="display: none;"></div>
         </div>
         
         <!-- 模块3：情绪与需求表达支持工具 -->
         <div class="card">
-            <div class="module-title">😊 情绪与需求表达支持工具</div>
+            <div class="module-title"><i class="fas fa-smile"></i> 情绪与需求表达支持工具</div>
             <button type="button" onclick="generateEmotion()">生成情绪与需求表达支持</button>
+            <div class="loading" id="emotion-loading">
+                <div class="loading-spinner"></div>
+                <p>正在生成情绪与需求表达支持...</p>
+            </div>
             <div id="emotion-result" class="result" style="display: none;"></div>
         </div>
         
         <!-- 模块4：岗位适配训练与岗前培训工具 -->
         <div class="card">
-            <div class="module-title">🎓 岗位适配训练与岗前培训工具</div>
+            <div class="module-title"><i class="fas fa-graduation-cap"></i> 岗位适配训练与岗前培训工具</div>
             <form id="training-form">
                 <div class="form-group">
                     <label for="training-job">岗位名称：</label>
-                    <input type="text" id="training-job" placeholder="例如：酒店保洁">
+                    <input type="text" id="training-job" placeholder="例如：酒店保洁" list="job-titles">
+                    <button type="button" class="voice-btn" onclick="startVoiceRecognition('training-job')"><i class="fas fa-microphone"></i> 语音输入</button>
                 </div>
                 <button type="button" onclick="generateTraining()">生成培训材料</button>
             </form>
+            <div class="loading" id="training-loading">
+                <div class="loading-spinner"></div>
+                <p>正在生成培训材料...</p>
+            </div>
             <div id="training-result" class="result" style="display: none;"></div>
         </div>
     </div>
     
+    <!-- 历史记录模态框 -->
+    <div id="history-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-history"></i> 历史记录</h3>
+                <span class="close" onclick="closeHistory()">&times;</span>
+            </div>
+            <div id="history-content">
+                <!-- 历史记录内容将通过JavaScript动态生成 -->
+            </div>
+            <div class="clear-history">
+                <button type="button" onclick="clearHistory()"><i class="fas fa-trash"></i> 清空历史记录</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 导出选项模态框 -->
+    <div id="export-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-download"></i> 导出数据</h3>
+                <span class="close" onclick="closeExportOptions()">&times;</span>
+            </div>
+            <div style="padding: 20px;">
+                <p style="margin-bottom: 20px;">选择导出格式：</p>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <button type="button" onclick="exportToPDF()" style="padding: 15px; font-size: 1.1em;"><i class="fas fa-file-pdf"></i> 导出为PDF</button>
+                    <button type="button" onclick="exportToWord()" style="padding: 15px; font-size: 1.1em;"><i class="fas fa-file-word"></i> 导出为Word</button>
+                    <button type="button" onclick="exportToJSON()" style="padding: 15px; font-size: 1.1em;"><i class="fas fa-file-code"></i> 导出为JSON</button>
+                    <button type="button" onclick="exportToCSV()" style="padding: 15px; font-size: 1.1em;"><i class="fas fa-file-csv"></i> 导出为CSV</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 反馈建议模态框 -->
+    <div id="feedback-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-comment-dots"></i> 反馈建议</h3>
+                <span class="close" onclick="closeFeedback()">&times;</span>
+            </div>
+            <div style="padding: 20px;">
+                <form id="feedback-form">
+                    <div class="form-group">
+                        <label for="feedback-type">反馈类型：</label>
+                        <select id="feedback-type" style="width: 100%; padding: 10px; border-radius: 8px; border: 2px solid #4CAF50;">
+                            <option value="suggestion">功能建议</option>
+                            <option value="bug">bug报告</option>
+                            <option value="question">使用问题</option>
+                            <option value="other">其他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="feedback-content">反馈内容：</label>
+                        <textarea id="feedback-content" rows="5" placeholder="请详细描述您的反馈..." style="width: 100%; padding: 10px; border-radius: 8px; border: 2px solid #4CAF50; resize: vertical;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="feedback-contact">联系方式（选填）：</label>
+                        <input type="text" id="feedback-contact" placeholder="邮箱或电话" style="width: 100%; padding: 10px; border-radius: 8px; border: 2px solid #4CAF50;">
+                    </div>
+                    <button type="button" onclick="submitFeedback()" style="padding: 15px; font-size: 1.1em; margin-top: 20px;"><i class="fas fa-paper-plane"></i> 提交反馈</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
     <script>
+        // 多语言支持
+        const languages = {
+            'zh-CN': {
+                title: '心智障碍者职场适配支持助手',
+                language: '语言：',
+                module1: '岗位工作流程可视化拆解工具',
+                jobTitle: '岗位名称：',
+                task: '具体任务：',
+                generateWorkflow: '生成工作流程',
+                module2: '职场沟通辅助与话术生成工具',
+                generateCommunication: '生成沟通话术',
+                module3: '情绪与需求表达支持工具',
+                generateEmotion: '生成情绪与需求表达支持',
+                module4: '岗位适配训练与岗前培训工具',
+                generateTraining: '生成培训材料',
+                loadingWorkflow: '正在生成工作流程...',
+                loadingCommunication: '正在生成沟通话术...',
+                loadingEmotion: '正在生成情绪与需求表达支持...',
+                loadingTraining: '正在生成培训材料...',
+                print: '打印',
+                saveHistory: '保存到历史记录',
+                pleaseEnter: '请填写',
+                jobTitleAndTask: '岗位名称和具体任务',
+                jobTitleOnly: '岗位名称'
+            },
+            'zh-TW': {
+                title: '心智障礙者職場適配支援助手',
+                language: '語言：',
+                module1: '崗位工作流程可視化拆解工具',
+                jobTitle: '崗位名稱：',
+                task: '具體任務：',
+                generateWorkflow: '生成工作流程',
+                module2: '職場溝通輔助與話術生成工具',
+                generateCommunication: '生成溝通話術',
+                module3: '情緒與需求表達支援工具',
+                generateEmotion: '生成情緒與需求表達支援',
+                module4: '崗位適配訓練與崗前培訓工具',
+                generateTraining: '生成培訓材料',
+                loadingWorkflow: '正在生成工作流程...',
+                loadingCommunication: '正在生成溝通話術...',
+                loadingEmotion: '正在生成情緒與需求表達支援...',
+                loadingTraining: '正在生成培訓材料...',
+                print: '列印',
+                saveHistory: '儲存到歷史記錄',
+                pleaseEnter: '請填寫',
+                jobTitleAndTask: '崗位名稱和具體任務',
+                jobTitleOnly: '崗位名稱'
+            },
+            'en': {
+                title: 'Mental Disability Employment Support Assistant',
+                language: 'Language：',
+                module1: 'Job Workflow Visualization Tool',
+                jobTitle: 'Job Title：',
+                task: 'Specific Task：',
+                generateWorkflow: 'Generate Workflow',
+                module2: 'Workplace Communication Assistance Tool',
+                generateCommunication: 'Generate Communication Phrases',
+                module3: 'Emotion and Need Expression Support Tool',
+                generateEmotion: 'Generate Emotion Support',
+                module4: 'Job Adaptation Training Tool',
+                generateTraining: 'Generate Training Materials',
+                loadingWorkflow: 'Generating workflow...',
+                loadingCommunication: 'Generating communication phrases...',
+                loadingEmotion: 'Generating emotion support...',
+                loadingTraining: 'Generating training materials...',
+                print: 'Print',
+                saveHistory: 'Save to History',
+                pleaseEnter: 'Please enter',
+                jobTitleAndTask: 'job title and specific task',
+                jobTitleOnly: 'job title'
+            },
+            'yue': {
+                title: '心智障礙者職場適配支援助手',
+                language: '語言：',
+                module1: '崗位工作流程可視化拆解工具',
+                jobTitle: '崗位名稱：',
+                task: '具體任務：',
+                generateWorkflow: '生成工作流程',
+                module2: '職場溝通輔助與話術生成工具',
+                generateCommunication: '生成溝通話術',
+                module3: '情緒與需求表達支援工具',
+                generateEmotion: '生成情緒與需求表達支援',
+                module4: '崗位適配訓練與崗前培訓工具',
+                generateTraining: '生成培訓材料',
+                loadingWorkflow: '正在生成工作流程...',
+                loadingCommunication: '正在生成溝通話術...',
+                loadingEmotion: '正在生成情緒與需求表達支援...',
+                loadingTraining: '正在生成培訓材料...',
+                print: '打印',
+                saveHistory: '保存到歷史記錄',
+                pleaseEnter: '請填寫',
+                jobTitleAndTask: '崗位名稱和具體任務',
+                jobTitleOnly: '崗位名稱'
+            },
+            'min': {
+                title: '心智障礙者職場適配支援助手',
+                language: '語言：',
+                module1: '崗位工作流程可視化拆解工具',
+                jobTitle: '崗位名稱：',
+                task: '具體任務：',
+                generateWorkflow: '生成工作流程',
+                module2: '職場溝通輔助與話術生成工具',
+                generateCommunication: '生成溝通話術',
+                module3: '情緒與需求表達支援工具',
+                generateEmotion: '生成情緒與需求表達支援',
+                module4: '崗位適配訓練與崗前培訓工具',
+                generateTraining: '生成培訓材料',
+                loadingWorkflow: '正在生成工作流程...',
+                loadingCommunication: '正在生成溝通話術...',
+                loadingEmotion: '正在生成情緒與需求表達支援...',
+                loadingTraining: '正在生成培訓材料...',
+                print: '打印',
+                saveHistory: '保存到歷史記錄',
+                pleaseEnter: '請填寫',
+                jobTitleAndTask: '崗位名稱和具體任務',
+                jobTitleOnly: '崗位名稱'
+            }
+        };
+
+        // 历史记录存储
+        let history = JSON.parse(localStorage.getItem('mindjob-history') || '[]');
+        let currentLanguage = localStorage.getItem('mindjob-language') || 'zh-CN';
+        
+        // 语言切换函数
+        function changeLanguage() {
+            const lang = document.getElementById('language').value;
+            currentLanguage = lang;
+            localStorage.setItem('mindjob-language', lang);
+            updateLanguage();
+        }
+        
+        // 更新界面语言
+        function updateLanguage() {
+            const lang = languages[currentLanguage];
+            
+            // 更新标题
+            document.querySelector('.navbar h2').innerHTML = `<i class="fas fa-heart"></i> ${lang.title}`;
+            
+            // 更新语言选择器标签
+            document.querySelector('.language-selector label').textContent = lang.language;
+            
+            // 更新模块1
+            document.querySelector('#workflow-form .module-title').innerHTML = `<i class="fas fa-tasks"></i> ${lang.module1}`;
+            document.querySelector('#workflow-form label[for="job-title"]').textContent = lang.jobTitle;
+            document.querySelector('#workflow-form label[for="task"]').textContent = lang.task;
+            document.querySelector('#workflow-form button').textContent = lang.generateWorkflow;
+            document.querySelector('#workflow-loading p').textContent = lang.loadingWorkflow;
+            
+            // 更新模块2
+            document.querySelector('#communication-form .module-title').innerHTML = `<i class="fas fa-comments"></i> ${lang.module2}`;
+            document.querySelector('#communication-form label[for="communication-job"]').textContent = lang.jobTitle;
+            document.querySelector('#communication-form button').textContent = lang.generateCommunication;
+            document.querySelector('#communication-loading p').textContent = lang.loadingCommunication;
+            
+            // 更新模块3
+            document.querySelector('#emotion-result').previousElementSibling.previousElementSibling.previousElementSibling.innerHTML = `<i class="fas fa-smile"></i> ${lang.module3}`;
+            document.querySelector('#emotion-loading').previousElementSibling.textContent = lang.generateEmotion;
+            document.querySelector('#emotion-loading p').textContent = lang.loadingEmotion;
+            
+            // 更新模块4
+            document.querySelector('#training-form .module-title').innerHTML = `<i class="fas fa-graduation-cap"></i> ${lang.module4}`;
+            document.querySelector('#training-form label[for="training-job"]').textContent = lang.jobTitle;
+            document.querySelector('#training-form button').textContent = lang.generateTraining;
+            document.querySelector('#training-loading p').textContent = lang.loadingTraining;
+        }
+        
+        // 初始化语言设置
+        function initLanguage() {
+            document.getElementById('language').value = currentLanguage;
+            updateLanguage();
+        }
+        
+        // 显示加载动画
+        function showLoading(elementId) {
+            document.getElementById(elementId).classList.add('show');
+        }
+        
+        // 隐藏加载动画
+        function hideLoading(elementId) {
+            document.getElementById(elementId).classList.remove('show');
+        }
+        
+        // 保存到历史记录
+        function saveToHistory(type, data) {
+            const record = {
+                id: Date.now(),
+                type: type,
+                data: data,
+                timestamp: new Date().toLocaleString()
+            };
+            history.unshift(record);
+            if (history.length > 20) {
+                history = history.slice(0, 20);
+            }
+            localStorage.setItem('mindjob-history', JSON.stringify(history));
+        }
+        
         // 生成工作流程
         function generateWorkflow() {
             const jobTitle = document.getElementById('job-title').value;
@@ -369,42 +1567,51 @@
                 return;
             }
             
-            const result = document.getElementById('workflow-result');
-            result.innerHTML = `
-                <div class="workflow-card">
-                    <h4>工作流程卡</h4>
-                    <p style="text-align: center; margin-bottom: 15px;"><strong>岗位：${jobTitle}</strong><br><strong>任务：${task}</strong></p>
-                    <div class="workflow-step">
-                        <span class="step-number">1. 🔍</span> 找到${task.split(' ')[1]}<br>
-                        <small>看${task.split(' ')[1]}上的日期</small>
+            showLoading('workflow-loading');
+            
+            // 模拟生成过程
+            setTimeout(() => {
+                const result = document.getElementById('workflow-result');
+                result.innerHTML = `
+                    <div class="workflow-card">
+                        <h4>工作流程卡</h4>
+                        <p style="text-align: center; margin-bottom: 15px;"><strong>岗位：${jobTitle}</strong><br><strong>任务：${task}</strong></p>
+                        <div class="workflow-step">
+                            <span class="step-number">1. <i class="fas fa-search"></i></span> 找到${task.split(' ')[1] || task}<br>
+                            <small>看商品上的日期</small>
+                        </div>
+                        <div class="workflow-step">
+                            <span class="step-number">2. <i class="fas fa-box"></i></span> 轻轻取下商品<br>
+                            <small>小心拿在手上</small>
+                        </div>
+                        <div class="workflow-step">
+                            <span class="step-number">3. <i class="fas fa-user-tie"></i></span> 走到带教老师面前
+                        </div>
+                        <div class="workflow-step">
+                            <span class="step-number">4. <i class="fas fa-comment"></i></span> 说：老师，这是${task}<br>
+                            <small>等待老师指示</small>
+                        </div>
+                        <div class="warning">
+                            <strong>⚠️ 易错点：</strong><br>
+                            1. 别拿错保质期好的${task.split(' ')[1] || task}<br>
+                            2. 取${task.split(' ')[1] || task}时别弄掉其他${task.split(' ')[1] || task}<br>
+                            3. 记得找带教老师，别自己处理
+                        </div>
+                        <div class="error-handling">
+                            <strong>❌ 做错了怎么办：</strong><br>
+                            1. 立刻停下手中的事<br>
+                            2. 找到带教老师<br>
+                            3. 告诉带教老师哪里做错了
+                        </div>
                     </div>
-                    <div class="workflow-step">
-                        <span class="step-number">2. 📦</span> 轻轻取下${task.split(' ')[1]}<br>
-                        <small>放在手上</small>
-                    </div>
-                    <div class="workflow-step">
-                        <span class="step-number">3. 👨‍🏫</span> 拿到带教老师面前
-                    </div>
-                    <div class="workflow-step">
-                        <span class="step-number">4. 💬</span> 告诉带教老师<br>
-                        <small>这是${task}</small>
-                    </div>
-                    <div class="warning">
-                        <strong>⚠️ 易错点：</strong><br>
-                        1. 别拿错保质期好的${task.split(' ')[1]}<br>
-                        2. 取${task.split(' ')[1]}时别弄掉其他${task.split(' ')[1]}<br>
-                        3. 记得找带教老师，别自己处理
-                    </div>
-                    <div class="error-handling">
-                        <strong>❌ 做错了怎么办：</strong><br>
-                        1. 立刻停下手中的事<br>
-                        2. 找到带教老师<br>
-                        3. 告诉带教老师哪里做错了
-                    </div>
-                </div>
-                <button type="button" onclick="window.print()">打印工作流程卡</button>
-            `;
-            result.style.display = 'block';
+                    <button type="button" onclick="window.print()">打印工作流程卡</button>
+                    <button type="button" class="history-btn" onclick="saveToHistory('workflow', {jobTitle: '${jobTitle}', task: '${task}'}); alert('已保存到历史记录')">保存到历史记录</button>
+                    <button type="button" class="play-btn" onclick="speakText('工作流程：${jobTitle}，${task}。第一步，找到${task.split(' ')[1] || task}。第二步，轻轻取下商品。第三步，走到带教老师面前。第四步，说：老师，这是${task}。')"><i class="fas fa-volume-up"></i> 语音播报</button>
+                `;
+                result.style.display = 'block';
+                hideLoading('workflow-loading');
+                saveToHistory('workflow', {jobTitle, task});
+            }, 1000);
         }
         
         // 生成沟通话术
@@ -416,100 +1623,118 @@
                 return;
             }
             
-            const result = document.getElementById('communication-result');
-            result.innerHTML = `
-                <div class="communication-card">
-                    <h4>沟通话术卡</h4>
-                    <p style="text-align: center; margin-bottom: 15px;"><strong>岗位：${jobTitle}</strong></p>
-                    <div class="communication-scene">
-                        <span class="scene-title">🔵 顾客常规提问：</span><br>
-                        🗣️ 您好，需要什么帮助？<br>
-                        🗣️ 这个商品是今天的，新鲜。<br>
-                        🗣️ 收款机在这里，麻烦扫码。<br>
-                        🗣️ 谢谢光临，欢迎再来！<br>
-                        🗣️ 请问需要打包吗？
+            showLoading('communication-loading');
+            
+            // 模拟生成过程
+            setTimeout(() => {
+                const result = document.getElementById('communication-result');
+                result.innerHTML = `
+                    <div class="communication-card">
+                        <h4>沟通话术卡</h4>
+                        <p style="text-align: center; margin-bottom: 15px;"><strong>岗位：${jobTitle}</strong></p>
+                        <div class="communication-scene">
+                            <span class="scene-title">🔵 顾客常规提问：</span><br>
+                            🗣️ 您好，需要什么帮助？<br>
+                            🗣️ 这个商品是今天的，新鲜。<br>
+                            🗣️ 收款机在这里，麻烦扫码。<br>
+                            🗣️ 谢谢光临，欢迎再来！<br>
+                            🗣️ 请问需要打包吗？
+                        </div>
+                        <div class="communication-scene">
+                            <span class="scene-title">🟢 同事工作对接：</span><br>
+                            🗣️ 这个订单我做完了，给你。<br>
+                            🗣️ 请问这个放在哪里？<br>
+                            🗣️ 我去洗手间，帮我看一下。<br>
+                            🗣️ 这个商品卖完了，告诉顾客。<br>
+                            🗣️ 下班时间到了，交接一下。
+                        </div>
+                        <div class="communication-scene">
+                            <span class="scene-title">🟡 向带教老师求助：</span><br>
+                            🗣️ 老师，我不会做这个，能教我吗？<br>
+                            🗣️ 老师，这个机器怎么用？<br>
+                            🗣️ 老师，顾客问的问题我不会答。<br>
+                            🗣️ 老师，我身体有点不舒服。<br>
+                            🗣️ 老师，我需要休息一下。
+                        </div>
+                        <div class="communication-scene">
+                            <span class="scene-title">🟠 表达自身需求：</span><br>
+                            🗣️ 我想喝水，去拿杯子。<br>
+                            🗣️ 我肚子饿了，要去吃饭。<br>
+                            🗣️ 我眼睛累了，想休息5分钟。<br>
+                            🗣️ 我手疼，需要戴手套。<br>
+                            🗣️ 我要上洗手间，马上回来。
+                        </div>
+                        <div class="communication-scene">
+                            <span class="scene-title">🔴 突发场景应急：</span><br>
+                            🗣️ 对不起，我去找带教老师。<br>
+                            🗣️ 老师，这里有顾客投诉我。<br>
+                            🗣️ 老师，我做错了，能帮我吗？
+                        </div>
                     </div>
-                    <div class="communication-scene">
-                        <span class="scene-title">🟢 同事工作对接：</span><br>
-                        🗣️ 这个订单我做完了，给你。<br>
-                        🗣️ 请问这个放在哪里？<br>
-                        🗣️ 我去洗手间，帮我看一下。<br>
-                        🗣️ 这个商品卖完了，告诉顾客。<br>
-                        🗣️ 下班时间到了，交接一下。
-                    </div>
-                    <div class="communication-scene">
-                        <span class="scene-title">🟡 向带教老师求助：</span><br>
-                        🗣️ 老师，我不会做这个，能教我吗？<br>
-                        🗣️ 老师，这个机器怎么用？<br>
-                        🗣️ 老师，顾客问的问题我不会答。<br>
-                        🗣️ 老师，我身体有点不舒服。<br>
-                        🗣️ 老师，我需要休息一下。
-                    </div>
-                    <div class="communication-scene">
-                        <span class="scene-title">🟠 表达自身需求：</span><br>
-                        🗣️ 我想喝水，去拿杯子。<br>
-                        🗣️ 我肚子饿了，要去吃饭。<br>
-                        🗣️ 我眼睛累了，想休息5分钟。<br>
-                        🗣️ 我手疼，需要戴手套。<br>
-                        🗣️ 我要上洗手间，马上回来。
-                    </div>
-                    <div class="communication-scene">
-                        <span class="scene-title">🔴 突发场景应急：</span><br>
-                        🗣️ 对不起，我去找带教老师。<br>
-                        🗣️ 老师，这里有顾客投诉我。<br>
-                        🗣️ 老师，我做错了，能帮我吗？
-                    </div>
-                </div>
-                <button type="button" onclick="window.print()">打印沟通话术卡</button>
-            `;
-            result.style.display = 'block';
+                    <button type="button" onclick="window.print()">打印沟通话术卡</button>
+                    <button type="button" class="history-btn" onclick="saveToHistory('communication', {jobTitle: '${jobTitle}'}); alert('已保存到历史记录')">保存到历史记录</button>
+                    <button type="button" class="play-btn" onclick="speakText('沟通话术：${jobTitle}。顾客常规提问：您好，需要什么帮助？这个商品是今天的，新鲜。收款机在这里，麻烦扫码。谢谢光临，欢迎再来！请问需要打包吗？')"><i class="fas fa-volume-up"></i> 语音播报</button>
+                `;
+                result.style.display = 'block';
+                hideLoading('communication-loading');
+                saveToHistory('communication', {jobTitle});
+            }, 1000);
         }
         
         // 生成情绪与需求表达支持
         function generateEmotion() {
-            const result = document.getElementById('emotion-result');
-            result.innerHTML = `
-                <div class="emotion-card-container">
-                    <h4>情绪与需求表达卡</h4>
-                    <div class="emotion-card">
-                        <span class="emotion-title">😊 平静：</span>心情好，工作顺利<br>
-                        <small>继续保持，认真工作</small>
+            showLoading('emotion-loading');
+            
+            // 模拟生成过程
+            setTimeout(() => {
+                const result = document.getElementById('emotion-result');
+                result.innerHTML = `
+                    <div class="emotion-card-container">
+                        <h4>情绪与需求表达卡</h4>
+                        <div class="emotion-card">
+                            <span class="emotion-title">😊 平静：</span>心情好，工作顺利<br>
+                            <small>继续保持，认真工作</small>
+                        </div>
+                        <div class="emotion-card">
+                            <span class="emotion-title">😰 紧张：</span>心跳加快，手心出汗<br>
+                            <small>停下来，深呼吸3次</small><br>
+                            <small>喝口水，休息1分钟</small>
+                        </div>
+                        <div class="emotion-card">
+                            <span class="emotion-title">😟 焦虑：</span>担心做不好，害怕被批评<br>
+                            <small>找到带教老师</small><br>
+                            <small>告诉老师：我有点担心</small>
+                        </div>
+                        <div class="emotion-card">
+                            <span class="emotion-title">😠 生气：</span>心里难受，想发脾气<br>
+                            <small>离开现场，到休息区</small><br>
+                            <small>坐5分钟，慢慢平静</small>
+                        </div>
+                        <div class="emotion-card">
+                            <span class="emotion-title">📝 需求表达：</span><br>
+                            👋 我需要帮助：老师，我不会做这个<br>
+                            🤒 我身体不舒服：老师，我肚子有点疼<br>
+                            😴 我想休息5分钟：老师，我有点累<br>
+                            🥤 我渴了：老师，我想喝水<br>
+                            🍽️ 我饿了：老师，我想吃饭
+                        </div>
+                        <div class="emotion-card">
+                            <span class="emotion-title">👨‍🏫 情绪应激事件处理指引（给带教老师）：</span><br>
+                            1. 保持冷静，不要大声说话<br>
+                            2. 走到心智障碍者身边，轻声询问<br>
+                            3. 用简单的话安抚：「没关系，我来帮你」<br>
+                            4. 带他到安静的地方，慢慢沟通<br>
+                            5. 了解原因，给予具体帮助
+                        </div>
                     </div>
-                    <div class="emotion-card">
-                        <span class="emotion-title">😰 紧张：</span>心跳加快，手心出汗<br>
-                        <small>停下来，深呼吸3次</small><br>
-                        <small>喝口水，休息1分钟</small>
-                    </div>
-                    <div class="emotion-card">
-                        <span class="emotion-title">😟 焦虑：</span>担心做不好，害怕被批评<br>
-                        <small>找到带教老师</small><br>
-                        <small>告诉老师：我有点担心</small>
-                    </div>
-                    <div class="emotion-card">
-                        <span class="emotion-title">😠 生气：</span>心里难受，想发脾气<br>
-                        <small>离开现场，到休息区</small><br>
-                        <small>坐5分钟，慢慢平静</small>
-                    </div>
-                    <div class="emotion-card">
-                        <span class="emotion-title">📝 需求表达：</span><br>
-                        👋 我需要帮助：老师，我不会做这个<br>
-                        🤒 我身体不舒服：老师，我肚子有点疼<br>
-                        😴 我想休息5分钟：老师，我有点累<br>
-                        🥤 我渴了：老师，我想喝水<br>
-                        🍽️ 我饿了：老师，我想吃饭
-                    </div>
-                    <div class="emotion-card">
-                        <span class="emotion-title">👨‍🏫 情绪应激事件处理指引（给带教老师）：</span><br>
-                        1. 保持冷静，不要大声说话<br>
-                        2. 走到心智障碍者身边，轻声询问<br>
-                        3. 用简单的话安抚：「没关系，我来帮你」<br>
-                        4. 带他到安静的地方，慢慢沟通<br>
-                        5. 了解原因，给予具体帮助
-                    </div>
-                </div>
-                <button type="button" onclick="window.print()">打印情绪与需求表达卡</button>
-            `;
-            result.style.display = 'block';
+                    <button type="button" onclick="window.print()">打印情绪与需求表达卡</button>
+                    <button type="button" class="history-btn" onclick="saveToHistory('emotion', {}); alert('已保存到历史记录')">保存到历史记录</button>
+                    <button type="button" class="play-btn" onclick="speakText('情绪与需求表达：平静：心情好，工作顺利。紧张：停下来，深呼吸3次。焦虑：找到带教老师。生气：离开现场，到休息区。需求表达：老师，我不会做这个。老师，我身体不舒服。老师，我想休息5分钟。')"><i class="fas fa-volume-up"></i> 语音播报</button>
+                `;
+                result.style.display = 'block';
+                hideLoading('emotion-loading');
+                saveToHistory('emotion', {});
+            }, 1000);
         }
         
         // 生成培训材料
@@ -521,69 +1746,642 @@
                 return;
             }
             
-            const result = document.getElementById('training-result');
-            result.innerHTML = `
-                <div class="training-card">
-                    <h4>岗位培训手册</h4>
-                    <p style="text-align: center; margin-bottom: 15px;"><strong>岗位：${jobTitle}</strong></p>
-                    <div class="training-module">
-                        <span class="module-title-training">🏢 岗位认知：</span><br>
-                        - ${jobTitle}的工作是保持工作区域干净整洁<br>
-                        - 要对顾客友好，保持微笑
+            showLoading('training-loading');
+            
+            // 模拟生成过程
+            setTimeout(() => {
+                const result = document.getElementById('training-result');
+                result.innerHTML = `
+                    <div class="training-card">
+                        <h4>岗位培训手册</h4>
+                        <p style="text-align: center; margin-bottom: 15px;"><strong>岗位：${jobTitle}</strong></p>
+                        <div class="training-module">
+                            <span class="module-title-training"><i class="fas fa-building"></i> 岗位认知：</span><br>
+                            - ${jobTitle}的工作是保持工作区域干净整洁<br>
+                            - 要对顾客友好，保持微笑
+                        </div>
+                        <div class="training-module">
+                            <span class="module-title-training"><i class="fas fa-tasks"></i> 工作流程：</span><br>
+                            1. 准备工作用品<br>
+                            2. 按照规定步骤完成工作<br>
+                            3. 检查工作质量<br>
+                            4. 整理工作用品
+                        </div>
+                        <div class="training-module">
+                            <span class="module-title-training"><i class="fas fa-comments"></i> 沟通规范：</span><br>
+                            - 遇到顾客说：您好！<br>
+                            - 顾客问话要认真回答<br>
+                            - 有问题找带教老师
+                        </div>
+                        <div class="training-module">
+                            <span class="module-title-training"><i class="fas fa-shield-alt"></i> 安全规则：</span><br>
+                            - 小心使用工具，注意安全<br>
+                            - 发现危险要告诉带教老师<br>
+                            - 遵守工作场所的安全规定
+                        </div>
+                        <div class="training-module">
+                            <span class="module-title-training"><i class="fas fa-smile"></i> 情绪管理：</span><br>
+                            - 工作累了可以休息一下<br>
+                            - 心情不好找带教老师聊聊
+                        </div>
+                        <div class="training-module">
+                            <span class="module-title-training"><i class="fas fa-award"></i> 岗位模拟训练题库：</span><br>
+                            1. 如何正确完成工作任务？<br>
+                            <small>答案：按照带教老师教的步骤，一步一步做</small><br>
+                            2. 遇到顾客询问，应该怎么做？<br>
+                            <small>答案：微笑回答，不知道的找带教老师</small><br>
+                            3. 工作中遇到困难，应该怎么做？<br>
+                            <small>答案：找到带教老师，寻求帮助</small>
+                        </div>
+                        <div class="training-module">
+                            <span class="module-title-training"><i class="fas fa-user-tie"></i> 企业用工适配指引：</span><br>
+                            <strong>带教老师工作规范：</strong><br>
+                            - 耐心教导，多鼓励<br>
+                            - 分解任务，一步一步教<br>
+                            <strong>环境适配建议：</strong><br>
+                            - 工作区域保持整洁有序<br>
+                            - 物品摆放固定位置<br>
+                            <strong>激励方法：</strong><br>
+                            - 完成任务给予表扬<br>
+                            - 定期评选优秀员工<br>
+                            <strong>风险防控：</strong><br>
+                            - 定期安全培训<br>
+                            - 建立应急处理机制
+                        </div>
                     </div>
-                    <div class="training-module">
-                        <span class="module-title-training">📋 工作流程：</span><br>
-                        1. 准备工作用品<br>
-                        2. 按照规定步骤完成工作<br>
-                        3. 检查工作质量<br>
-                        4. 整理工作用品
-                    </div>
-                    <div class="training-module">
-                        <span class="module-title-training">💬 沟通规范：</span><br>
-                        - 遇到顾客说：您好！<br>
-                        - 顾客问话要认真回答<br>
-                        - 有问题找带教老师
-                    </div>
-                    <div class="training-module">
-                        <span class="module-title-training">⚠️ 安全规则：</span><br>
-                        - 小心使用工具，注意安全<br>
-                        - 发现危险要告诉带教老师<br>
-                        - 遵守工作场所的安全规定
-                    </div>
-                    <div class="training-module">
-                        <span class="module-title-training">😊 情绪管理：</span><br>
-                        - 工作累了可以休息一下<br>
-                        - 心情不好找带教老师聊聊
-                    </div>
-                    <div class="training-module">
-                        <span class="module-title-training">🏆 岗位模拟训练题库：</span><br>
-                        1. 如何正确完成工作任务？<br>
-                        <small>答案：按照带教老师教的步骤，一步一步做</small><br>
-                        2. 遇到顾客询问，应该怎么做？<br>
-                        <small>答案：微笑回答，不知道的找带教老师</small><br>
-                        3. 工作中遇到困难，应该怎么做？<br>
-                        <small>答案：找到带教老师，寻求帮助</small>
-                    </div>
-                    <div class="training-module">
-                        <span class="module-title-training">👨‍🏫 企业用工适配指引：</span><br>
-                        <strong>带教老师工作规范：</strong><br>
-                        - 耐心教导，多鼓励<br>
-                        - 分解任务，一步一步教<br>
-                        <strong>环境适配建议：</strong><br>
-                        - 工作区域保持整洁有序<br>
-                        - 物品摆放固定位置<br>
-                        <strong>激励方法：</strong><br>
-                        - 完成任务给予表扬<br>
-                        - 定期评选优秀员工<br>
-                        <strong>风险防控：</strong><br>
-                        - 定期安全培训<br>
-                        - 建立应急处理机制
-                    </div>
-                </div>
-                <button type="button" onclick="window.print()">打印培训手册</button>
-            `;
-            result.style.display = 'block';
+                    <button type="button" onclick="window.print()">打印培训手册</button>
+                    <button type="button" class="history-btn" onclick="saveToHistory('training', {jobTitle: '${jobTitle}'}); alert('已保存到历史记录')">保存到历史记录</button>
+                    <button type="button" class="play-btn" onclick="speakText('岗位培训：${jobTitle}。岗位认知：保持工作区域干净整洁，对顾客友好。工作流程：准备工作用品，按照规定步骤完成工作，检查工作质量，整理工作用品。沟通规范：遇到顾客说您好，有问题找带教老师。')"><i class="fas fa-volume-up"></i> 语音播报</button>
+                `;
+                result.style.display = 'block';
+                hideLoading('training-loading');
+                saveToHistory('training', {jobTitle});
+            }, 1000);
         }
+        
+        // 注册Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(function(error) {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+
+        // 语音识别功能
+        function startVoiceRecognition(inputId) {
+            if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = new SpeechRecognition();
+                recognition.lang = currentLanguage === 'zh-CN' ? 'zh-CN' : 
+                                  currentLanguage === 'zh-TW' ? 'zh-TW' :
+                                  currentLanguage === 'en' ? 'en-US' : 'zh-CN';
+                recognition.continuous = false;
+                recognition.interimResults = true; // 启用中间结果
+                recognition.maxAlternatives = 3; // 启用多个识别结果
+
+                // 创建语音识别状态显示
+                const statusDiv = document.createElement('div');
+                statusDiv.id = 'recognition-status';
+                statusDiv.style.position = 'fixed';
+                statusDiv.style.bottom = '20px';
+                statusDiv.style.left = '50%';
+                statusDiv.style.transform = 'translateX(-50%)';
+                statusDiv.style.backgroundColor = 'rgba(76, 175, 80, 0.9)';
+                statusDiv.style.color = 'white';
+                statusDiv.style.padding = '15px 25px';
+                statusDiv.style.borderRadius = '30px';
+                statusDiv.style.zIndex = '1000';
+                statusDiv.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+                statusDiv.innerHTML = '<i class="fas fa-microphone"></i> 请开始说话...';
+                document.body.appendChild(statusDiv);
+
+                recognition.onstart = function() {
+                    console.log('语音识别开始');
+                };
+
+                recognition.onresult = function(event) {
+                    let transcript = '';
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        if (event.results[i].isFinal) {
+                            transcript = event.results[i][0].transcript;
+                            break;
+                        } else {
+                            // 显示中间结果
+                            statusDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + event.results[i][0].transcript;
+                        }
+                    }
+                    
+                    if (transcript) {
+                        document.getElementById(inputId).value = transcript;
+                        statusDiv.innerHTML = '<i class="fas fa-check"></i> 识别成功：' + transcript;
+                        setTimeout(() => {
+                            document.body.removeChild(statusDiv);
+                        }, 2000);
+                    }
+                };
+
+                recognition.onerror = function(event) {
+                    console.error('语音识别错误：', event.error);
+                    statusDiv.innerHTML = '<i class="fas fa-times"></i> 识别失败，请重试';
+                    statusDiv.style.backgroundColor = 'rgba(244, 67, 54, 0.9)';
+                    setTimeout(() => {
+                        document.body.removeChild(statusDiv);
+                    }, 2000);
+                };
+
+                recognition.onend = function() {
+                    console.log('语音识别结束');
+                    if (document.getElementById('recognition-status')) {
+                        document.body.removeChild(statusDiv);
+                    }
+                };
+
+                recognition.start();
+            } else {
+                alert('您的浏览器不支持语音识别功能');
+            }
+        }
+
+        // 语音合成功能
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                // 停止之前的语音
+                if (speechSynthesis.speaking) {
+                    speechSynthesis.cancel();
+                }
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = currentLanguage === 'zh-CN' ? 'zh-CN' : 
+                                currentLanguage === 'zh-TW' ? 'zh-TW' :
+                                currentLanguage === 'en' ? 'en-US' : 'zh-CN';
+                utterance.rate = 0.8; // 稍微减慢语速，提高可理解性
+                utterance.pitch = 1.1; // 稍微提高音调，使声音更清晰
+                utterance.volume = 1;
+                
+                // 创建语音播报状态显示
+                const statusDiv = document.createElement('div');
+                statusDiv.id = 'speech-status';
+                statusDiv.style.position = 'fixed';
+                statusDiv.style.bottom = '20px';
+                statusDiv.style.left = '50%';
+                statusDiv.style.transform = 'translateX(-50%)';
+                statusDiv.style.backgroundColor = 'rgba(33, 150, 243, 0.9)';
+                statusDiv.style.color = 'white';
+                statusDiv.style.padding = '15px 25px';
+                statusDiv.style.borderRadius = '30px';
+                statusDiv.style.zIndex = '1000';
+                statusDiv.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+                statusDiv.innerHTML = '<i class="fas fa-volume-up"></i> 正在播放...';
+                document.body.appendChild(statusDiv);
+                
+                utterance.onstart = function() {
+                    console.log('语音合成开始');
+                };
+                
+                utterance.onend = function() {
+                    console.log('语音合成结束');
+                    statusDiv.innerHTML = '<i class="fas fa-check"></i> 播放完成';
+                    setTimeout(() => {
+                        document.body.removeChild(statusDiv);
+                    }, 1000);
+                };
+                
+                utterance.onerror = function(event) {
+                    console.error('语音合成错误：', event);
+                    statusDiv.innerHTML = '<i class="fas fa-times"></i> 播放失败';
+                    statusDiv.style.backgroundColor = 'rgba(244, 67, 54, 0.9)';
+                    setTimeout(() => {
+                        document.body.removeChild(statusDiv);
+                    }, 2000);
+                };
+                
+                speechSynthesis.speak(utterance);
+            } else {
+                alert('您的浏览器不支持语音合成功能');
+            }
+        }
+
+        // 显示历史记录
+        function showHistory() {
+            const modal = document.getElementById('history-modal');
+            modal.style.display = 'block';
+            renderHistory();
+        }
+
+        // 关闭历史记录
+        function closeHistory() {
+            const modal = document.getElementById('history-modal');
+            modal.style.display = 'none';
+        }
+
+        // 渲染历史记录
+        function renderHistory() {
+            const historyContent = document.getElementById('history-content');
+            
+            if (history.length === 0) {
+                historyContent.innerHTML = `
+                    <div class="empty-history">
+                        <i class="fas fa-clipboard-list" style="font-size: 48px; margin-bottom: 20px; color: #ccc;"></i>
+                        <p>暂无历史记录</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            history.forEach(item => {
+                let content = '';
+                switch(item.type) {
+                    case 'workflow':
+                        content = `岗位：${item.data.jobTitle}<br>任务：${item.data.task}`;
+                        break;
+                    case 'communication':
+                        content = `岗位：${item.data.jobTitle}`;
+                        break;
+                    case 'emotion':
+                        content = '情绪与需求表达支持';
+                        break;
+                    case 'training':
+                        content = `岗位：${item.data.jobTitle}`;
+                        break;
+                }
+
+                html += `
+                    <div class="history-item">
+                        <div class="history-item-header">
+                            <span class="history-item-type">
+                                ${item.type === 'workflow' ? '工作流程' : 
+                                  item.type === 'communication' ? '沟通话术' : 
+                                  item.type === 'emotion' ? '情绪支持' : '培训材料'}
+                            </span>
+                            <span class="history-item-time">${item.timestamp}</span>
+                        </div>
+                        <div class="history-item-content">
+                            ${content}
+                        </div>
+                        <div class="history-actions">
+                            ${item.type === 'workflow' ? `<button type="button" onclick="loadHistoryItem(${item.id})">加载</button>` : ''}
+                            <button type="button" onclick="deleteHistoryItem(${item.id})" style="background-color: #f44336;">删除</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            historyContent.innerHTML = html;
+        }
+
+        // 清空历史记录
+        function clearHistory() {
+            if (confirm('确定要清空所有历史记录吗？')) {
+                history = [];
+                localStorage.setItem('mindjob-history', JSON.stringify(history));
+                renderHistory();
+            }
+        }
+
+        // 删除历史记录项
+        function deleteHistoryItem(id) {
+            if (confirm('确定要删除这条历史记录吗？')) {
+                history = history.filter(item => item.id !== id);
+                localStorage.setItem('mindjob-history', JSON.stringify(history));
+                renderHistory();
+            }
+        }
+
+        // 加载历史记录项到表单
+        function loadHistoryItem(id) {
+            const item = history.find(item => item.id === id);
+            if (item && item.type === 'workflow') {
+                document.getElementById('job-title').value = item.data.jobTitle;
+                document.getElementById('task').value = item.data.task;
+                closeHistory();
+                alert('已加载历史记录');
+            }
+        }
+
+        // 显示导出选项
+        function showExportOptions() {
+            const modal = document.getElementById('export-modal');
+            modal.style.display = 'block';
+        }
+
+        // 关闭导出选项
+        function closeExportOptions() {
+            const modal = document.getElementById('export-modal');
+            modal.style.display = 'none';
+        }
+
+        // 导出为PDF
+        function exportToPDF() {
+            // 使用浏览器的打印功能模拟PDF导出
+            const printWindow = window.open('', '_blank');
+            let content = `
+                <html>
+                <head>
+                    <title>心智障碍者职场适配支持助手 - 导出数据</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; }
+                        h1 { color: #4CAF50; text-align: center; }
+                        h2 { color: #388E3C; margin-top: 30px; }
+                        .history-item { background-color: #f9f9f9; padding: 15px; margin-bottom: 10px; border-left: 4px solid #2196F3; }
+                        .item-header { display: flex; justify-content: space-between; font-weight: bold; }
+                        .item-content { margin-top: 10px; }
+                    </style>
+                </head>
+                <body>
+                    <h1>心智障碍者职场适配支持助手 - 历史记录</h1>
+                    <h2>导出时间：${new Date().toLocaleString()}</h2>
+                    <h2>历史记录总数：${history.length}</h2>
+            `;
+
+            if (history.length === 0) {
+                content += '<p>暂无历史记录</p>';
+            } else {
+                history.forEach(item => {
+                    let typeText = item.type === 'workflow' ? '工作流程' : 
+                                  item.type === 'communication' ? '沟通话术' : 
+                                  item.type === 'emotion' ? '情绪支持' : '培训材料';
+                    let contentText = '';
+                    switch(item.type) {
+                        case 'workflow':
+                            contentText = `岗位：${item.data.jobTitle}<br>任务：${item.data.task}`;
+                            break;
+                        case 'communication':
+                            contentText = `岗位：${item.data.jobTitle}`;
+                            break;
+                        case 'emotion':
+                            contentText = '情绪与需求表达支持';
+                            break;
+                        case 'training':
+                            contentText = `岗位：${item.data.jobTitle}`;
+                            break;
+                    }
+                    content += `
+                        <div class="history-item">
+                            <div class="item-header">
+                                <span>${typeText}</span>
+                                <span>${item.timestamp}</span>
+                            </div>
+                            <div class="item-content">
+                                ${contentText}
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            content += `
+                </body>
+                </html>
+            `;
+
+            printWindow.document.write(content);
+            printWindow.document.close();
+            printWindow.onload = function() {
+                printWindow.print();
+                printWindow.close();
+            };
+            closeExportOptions();
+        }
+
+        // 导出为Word
+        function exportToWord() {
+            let content = `
+                <html>
+                <head>
+                    <title>心智障碍者职场适配支持助手 - 导出数据</title>
+                    <meta charset="UTF-8">
+                </head>
+                <body>
+                    <h1 style="color: #4CAF50; text-align: center;">心智障碍者职场适配支持助手 - 历史记录</h1>
+                    <h2 style="color: #388E3C;">导出时间：${new Date().toLocaleString()}</h2>
+                    <h2 style="color: #388E3C;">历史记录总数：${history.length}</h2>
+            `;
+
+            if (history.length === 0) {
+                content += '<p>暂无历史记录</p>';
+            } else {
+                history.forEach(item => {
+                    let typeText = item.type === 'workflow' ? '工作流程' : 
+                                  item.type === 'communication' ? '沟通话术' : 
+                                  item.type === 'emotion' ? '情绪支持' : '培训材料';
+                    let contentText = '';
+                    switch(item.type) {
+                        case 'workflow':
+                            contentText = `岗位：${item.data.jobTitle}\n任务：${item.data.task}`;
+                            break;
+                        case 'communication':
+                            contentText = `岗位：${item.data.jobTitle}`;
+                            break;
+                        case 'emotion':
+                            contentText = '情绪与需求表达支持';
+                            break;
+                        case 'training':
+                            contentText = `岗位：${item.data.jobTitle}`;
+                            break;
+                    }
+                    content += `
+                        <div style="background-color: #f9f9f9; padding: 15px; margin-bottom: 10px; border-left: 4px solid #2196F3;">
+                            <div style="font-weight: bold; display: flex; justify-content: space-between;">
+                                <span>${typeText}</span>
+                                <span>${item.timestamp}</span>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                ${contentText.replace(/\n/g, '<br>')}
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            content += `
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob([content], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `心智障碍者职场适配支持助手历史记录_${new Date().toISOString().slice(0, 10)}.doc`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            closeExportOptions();
+        }
+
+        // 导出为JSON
+        function exportToJSON() {
+            const data = {
+                exportTime: new Date().toISOString(),
+                totalRecords: history.length,
+                records: history
+            };
+            const jsonStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `心智障碍者职场适配支持助手历史记录_${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            closeExportOptions();
+        }
+
+        // 导出为CSV
+        function exportToCSV() {
+            let csv = '类型,岗位,任务,时间戳\n';
+            history.forEach(item => {
+                let typeText = item.type === 'workflow' ? '工作流程' : 
+                              item.type === 'communication' ? '沟通话术' : 
+                              item.type === 'emotion' ? '情绪支持' : '培训材料';
+                let jobTitle = item.data.jobTitle || '';
+                let task = item.data.task || '';
+                csv += `"${typeText}","${jobTitle}","${task}","${item.timestamp}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `心智障碍者职场适配支持助手历史记录_${new Date().toISOString().slice(0, 10)}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            closeExportOptions();
+        }
+
+        // 显示反馈建议
+        function showFeedback() {
+            const modal = document.getElementById('feedback-modal');
+            modal.style.display = 'block';
+        }
+
+        // 关闭反馈建议
+        function closeFeedback() {
+            const modal = document.getElementById('feedback-modal');
+            modal.style.display = 'none';
+        }
+
+        // 提交反馈
+        function submitFeedback() {
+            const type = document.getElementById('feedback-type').value;
+            const content = document.getElementById('feedback-content').value;
+            const contact = document.getElementById('feedback-contact').value;
+            
+            if (!content) {
+                alert('请填写反馈内容');
+                return;
+            }
+            
+            // 创建反馈数据
+            const feedback = {
+                id: Date.now(),
+                type: type,
+                content: content,
+                contact: contact,
+                timestamp: new Date().toISOString(),
+                browser: navigator.userAgent,
+                language: currentLanguage
+            };
+            
+            // 保存反馈到本地存储
+            let feedbacks = JSON.parse(localStorage.getItem('mindjob-feedback') || '[]');
+            feedbacks.unshift(feedback);
+            if (feedbacks.length > 50) {
+                feedbacks = feedbacks.slice(0, 50);
+            }
+            localStorage.setItem('mindjob-feedback', JSON.stringify(feedbacks));
+            
+            // 显示成功提示
+            alert('反馈提交成功！感谢您的建议，我们会认真考虑。');
+            
+            // 清空表单
+            document.getElementById('feedback-content').value = '';
+            document.getElementById('feedback-contact').value = '';
+            
+            // 关闭模态框
+            closeFeedback();
+        }
+
+        // 点击模态框外部关闭
+        window.onclick = function(event) {
+            const historyModal = document.getElementById('history-modal');
+            const exportModal = document.getElementById('export-modal');
+            const feedbackModal = document.getElementById('feedback-modal');
+            if (event.target == historyModal) {
+                historyModal.style.display = 'none';
+            } else if (event.target == exportModal) {
+                exportModal.style.display = 'none';
+            } else if (event.target == feedbackModal) {
+                feedbackModal.style.display = 'none';
+            }
+        }
+
+        // 滚动动画
+        function handleScrollAnimation() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // 深色模式切换
+        function toggleDarkMode() {
+            const body = document.body;
+            const isDarkMode = body.classList.toggle('dark-mode');
+            
+            // 保存设置到本地存储
+            localStorage.setItem('mindjob-dark-mode', isDarkMode);
+            
+            // 更新按钮图标
+            const button = document.querySelector('button[onclick="toggleDarkMode()"]');
+            if (isDarkMode) {
+                button.innerHTML = '<i class="fas fa-sun"></i> 浅色模式';
+            } else {
+                button.innerHTML = '<i class="fas fa-moon"></i> 深色模式';
+            }
+        }
+
+        // 初始化深色模式
+        function initDarkMode() {
+            const isDarkMode = localStorage.getItem('mindjob-dark-mode') === 'true';
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                const button = document.querySelector('button[onclick="toggleDarkMode()"]');
+                if (button) {
+                    button.innerHTML = '<i class="fas fa-sun"></i> 浅色模式';
+                }
+            }
+        }
+
+        // 滚动事件监听
+        window.addEventListener('scroll', handleScrollAnimation);
+
+        // 页面加载完成后初始化
+        window.onload = function() {
+            initLanguage();
+            initDarkMode();
+            // 添加滚动动画类
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.classList.add('fade-in');
+            });
+            // 初始执行一次
+            handleScrollAnimation();
+        };
     </script>
 </body>
 </html>
